@@ -1,17 +1,4 @@
-"""Comprehensive edge cases, extreme distributions, single-customer, and zero-baseline tests.
-
-Tests 40+ discrete scenarios:
-- Empty dataset handling
-- Single customer with single purchase order
-- Single customer with 100 identical purchase orders
-- Zero baseline prior window (recent > 0, prior = 0)
-- Zero activity both windows (recent = 0, prior = 0)
-- Reversal spend exceeding purchase spend (reversal rate saturation)
-- All customers with identical feature vectors
-- Extreme outlier values (e.g. £100,000 order, 50,000 units)
-- Leap years, minute timestamps, and boundary dates
-- Non-standard stock codes (POST, M, D, BANK CHARGES)
-"""
+"""Edge cases and boundary tests for customer feature calculations and outlier inputs."""
 
 import numpy as np
 import pandas as pd

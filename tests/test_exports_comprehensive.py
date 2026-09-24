@@ -1,9 +1,4 @@
-"""Comprehensive validation tests for reporting CSV exports, schema types, and non-null guarantees.
-
-Tests 15+ discrete scenarios:
-- Export existence, non-emptiness, and headers
-- Decimal type precision and column contracts across all 9 exported CSV tables
-"""
+"""Schema and non-null validation tests for reporting CSV exports."""
 
 import pandas as pd
 import pytest

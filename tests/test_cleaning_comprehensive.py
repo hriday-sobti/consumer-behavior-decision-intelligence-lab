@@ -1,15 +1,4 @@
-"""Comprehensive parameterized test suite for event classification and data cleaning.
-
-Tests 35+ discrete scenarios:
-- Exact cancellation prefixes ('C', 'c', mixed case, whitespace)
-- Reversal vs Cancellation boundaries
-- Non-positive quantities, extreme values
-- Negative prices, zero prices, fractional prices
-- Missing customer IDs (None, np.nan, '', '   ', '0', 0, float representations)
-- Null and corrupt dates
-- Deduplication edge cases (identical keys, different timestamps, multiple duplicates)
-- Line value precision and overflow resistance
-"""
+"""Unit tests for event classification rules, deduplication, and line values."""
 
 import numpy as np
 import pandas as pd

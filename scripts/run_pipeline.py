@@ -1,23 +1,4 @@
-"""Master end-to-end analytical pipeline runner.
-
-Executes all 28 conceptual steps in exact sequence:
-  1. Acquire Data
-  2. Inspect & Profile Data
-  3. Classify Events & Clean Data
-  4. Build Dimensions & Fact Tables
-  5. Calculate Reference Date
-  6. Build Customer Features & RFM
-  7. Prepare Clustering Features & Evaluate K-Means
-  8. Fit Behavioral Segments & Profiles
-  9. Build Monthly Snapshots & Assign Lifecycle States
-  10. Build State Transitions & Momentum
-  11. Build Decision Signals & Strategy Catalog
-  12. Load PostgreSQL Database
-  13. Export Reporting CSVs & Parquet Datasets
-  14. Generate Automated Insights & Visuals
-  15. Run All Integrity Validations
-  16. Generate Final Run Report & Business Brief
-"""
+"""Executes data cleaning, feature engineering, clustering, snapshots, and reporting."""
 
 import time
 from datetime import UTC, datetime

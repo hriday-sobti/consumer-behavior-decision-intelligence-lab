@@ -13,7 +13,7 @@ def run_all_validations() -> bool:
     
     Returns True if all checks pass, False if any critical integrity check fails.
     """
-    logger.info("Executing comprehensive SQL validation checks...")
+    logger.info("Running database integrity and constraint checks...")
     engine = get_engine()
 
     checks = [

@@ -1,6 +1,6 @@
 # Consumer Behavior Decision Intelligence Lab (CBDIL)
 
-An end-to-end customer analytics, behavioral segmentation, and decision-support system built around transactional purchasing behavior.
+A transactional customer analytics and behavioral decision-support system modeling commercial wholesale and retail purchasing dynamics.
 
 ---
 

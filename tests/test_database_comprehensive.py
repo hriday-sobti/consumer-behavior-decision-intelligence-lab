@@ -1,14 +1,4 @@
-"""Comprehensive tests for PostgreSQL database integrity, views, constraints, and audit lineage.
-
-Tests 25+ discrete database checks:
-- Staging table integrity and event class constraints
-- Dimension tables primary keys, uniqueness, and non-null constraints
-- Fact tables foreign key relations and non-orphan records
-- Customer behavior features non-null constraints
-- Monthly snapshot composite uniqueness
-- Decision signals foreign relations and strength constraints
-- Decision strategy table completeness and status checks
-"""
+"""Integrity and relational constraint checks for analytical PostgreSQL tables."""
 
 import pytest
 from sqlalchemy import text

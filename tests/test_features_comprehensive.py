@@ -1,14 +1,4 @@
-"""Comprehensive parameterized tests for customer features, RFM scoring, and time windows.
-
-Tests 40+ discrete scenarios:
-- Customer tenure & eligibility boundaries (1 order, 2 orders, 89 days, 90 days, 91 days)
-- Recency calculation under varying timestamps
-- Monetary change % with zero baseline, positive baseline, negative baseline
-- Frequency change % with zero prior orders
-- Product breadth momentum under expanding, static, and contracting catalogs
-- Reversal rate with 0%, 5%, 10%, 50%, 100% reversal spend
-- RFM quintile distribution bounds and ranking tie handling
-"""
+"""Unit tests for customer eligibility criteria, RFM quintiles, and momentum calculations."""
 
 import numpy as np
 import pandas as pd

@@ -1,11 +1,4 @@
-"""Comprehensive tests for behavioral clustering, lifecycle state precedence, and decision signals.
-
-Tests 45+ discrete scenarios:
-- K-Means evaluation across K in (3, 4, 5, 6) under primary analytical dataset
-- Full 5-state lifecycle precedence:
-    REACTIVATED > EMERGING > DORMANT > SOFTENING > ENGAGED
-- Decision Signal trigger conditions tested against realistic multi-customer benchmark populations
-"""
+"""Unit tests for segmentation stability, state transitions, and decision signal logic."""
 
 from datetime import date
 

@@ -1,8 +1,8 @@
-# Comprehensive Methodological Insights & Decision Register
+# Empirical Insights & Decision Register
 
 ## Overview
 
-The Consumer Behavior Decision Intelligence Lab generates deterministic insights by evaluating mathematically rigorous conditions against the empirical customer distributions. No synthetic narratives or unverified assertions are permitted.
+This document records observed behavioral patterns identified during analysis of the customer transaction records, paired with practical decision questions and measurement designs.
 
 Every analytical finding adheres to the locked six-part structure:
 1. **OBSERVATION**: What happened empirically?
