@@ -1,0 +1,32 @@
+{
+  "name": "CBDIL Muted Professional Theme",
+  "dataColors": [
+    "#1F4E78",
+    "#2E8B57",
+    "#D97706",
+    "#5A6B7C",
+    "#8C9BA5",
+    "#DC2626",
+    "#4B6584",
+    "#20BF6B"
+  ],
+  "background": "#FBFBFB",
+  "foreground": "#1F2D3D",
+  "tableAccent": "#1F4E78",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "outspace": [{ "color": { "solid": { "color": "#FBFBFB" } } }],
+        "background": [{ "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
+        "title": [
+          {
+            "fontColor": { "solid": { "color": "#1F2D3D" } },
+            "fontFamily": "Segoe UI",
+            "fontSize": 12,
+            "alignment": "Left"
+          }
+        ]
+      }
+    }
+  }
+}

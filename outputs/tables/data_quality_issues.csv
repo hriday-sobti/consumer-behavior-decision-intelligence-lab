@@ -1,0 +1,10 @@
+issue_type,affected_count,affected_pct,severity,impact
+duplicate_transaction_lines,34337,3.22,WARNING,Overcounts activity if not deduplicated or audited.
+cancellation_invoices,19494,1.83,INFO,Must be classified as cancellations; separate from valid sales.
+negative_quantities,22950,2.15,WARNING,Reversals or damaged goods; distorts raw sum totals.
+zero_quantities,0,0.0,WARNING,Null transactions; non-purchases.
+negative_unit_prices,5,0.0,FAIL,Corrupted accounting adjustment records (e.g. debt adjustments).
+zero_unit_prices,6202,0.58,WARNING,"Free samples, giveaways, or inventory audits."
+missing_customer_ids,243007,22.77,WARNING,Cannot be attributed to customer grain; excluded from customer segmentation.
+empty_or_whitespace_descriptions,4382,0.41,WARNING,Missing descriptive metadata.
+non_product_stock_codes,5351,0.5,INFO,"Postage, bank charges, manual adjustments."

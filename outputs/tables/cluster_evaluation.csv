@@ -1,0 +1,5 @@
+k,inertia,silhouette_score,min_cluster_size,min_cluster_share,meets_5pct_rule
+3,16148.04,0.2749,1084,0.2695,True
+4,13762.41,0.2634,585,0.1454,True
+5,12089.75,0.2509,527,0.131,True
+6,10582.45,0.2626,199,0.0495,False

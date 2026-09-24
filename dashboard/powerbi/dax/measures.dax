@@ -1,0 +1,91 @@
+// ============================================================================
+// Consumer Behavior Decision Intelligence Lab (CBDIL)
+// DAX Measure Catalog
+// ============================================================================
+
+// 1. Total Customers
+[Total Customers] = 
+DISTINCTCOUNT(customer_summary[customer_id])
+
+// 2. Active Customers (Engaged, Emerging, or Reactivated)
+[Active Customers] = 
+CALCULATE(
+    DISTINCTCOUNT(customer_summary[customer_id]),
+    customer_summary[behavioral_state] IN { "ENGAGED", "EMERGING", "REACTIVATED" }
+)
+
+// 3. Total Orders
+[Total Orders] = 
+SUM(customer_summary[lifetime_orders])
+
+// 4. Total Value
+[Total Value] = 
+SUM(customer_summary[total_value])
+
+// 5. Average Order Value (AOV)
+[Average Order Value] = 
+DIVIDE([Total Value], [Total Orders], 0)
+
+// 6. Median Order Value
+[Median Order Value] = 
+MEDIAN(customer_summary[average_order_value])
+
+// 7. Value per Customer
+[Value per Customer] = 
+DIVIDE([Total Value], [Total Customers], 0)
+
+// 8. Repeat Customer Rate
+[Repeat Customer Rate] = 
+VAR MultiOrderCust = CALCULATE(
+    DISTINCTCOUNT(customer_summary[customer_id]),
+    customer_summary[lifetime_orders] > 1
+)
+RETURN
+DIVIDE(MultiOrderCust, [Total Customers], 0)
+
+// 9. Recent Value (Recent 90-Day Window)
+[Recent Value] = 
+SUM(customer_summary[recent_90d_value])
+
+// 10. Prior Value (Prior 90-Day Baseline Window)
+[Prior Value] = 
+SUM(customer_summary[prior_90d_value])
+
+// 11. Value Momentum %
+[Value Momentum %] = 
+DIVIDE([Recent Value] - [Prior Value], [Prior Value], 0)
+
+// 12. Segment Customer Count
+[Segment Customer Count] = 
+CALCULATE(
+    DISTINCTCOUNT(customer_summary[customer_id]),
+    ALLEXCEPT(customer_summary, customer_summary[segment_name])
+)
+
+// 13. Segment Value
+[Segment Value] = 
+CALCULATE(
+    SUM(customer_summary[total_value]),
+    ALLEXCEPT(customer_summary, customer_summary[segment_name])
+)
+
+// 14. Segment Value Share
+[Segment Value Share] = 
+DIVIDE([Segment Value], CALCULATE([Total Value], ALL(customer_summary)), 0)
+
+// 15. Signal Customer Count
+[Signal Customer Count] = 
+DISTINCTCOUNT(decision_signals[customer_id])
+
+// 16. Reactivation Rate
+[Reactivation Rate] = 
+VAR Reactivated = CALCULATE(
+    DISTINCTCOUNT(customer_summary[customer_id]),
+    customer_summary[behavioral_state] = "REACTIVATED"
+)
+VAR DormantBase = CALCULATE(
+    DISTINCTCOUNT(customer_summary[customer_id]),
+    customer_summary[behavioral_state] IN { "DORMANT", "REACTIVATED" }
+)
+RETURN
+DIVIDE(Reactivated, DormantBase, 0)

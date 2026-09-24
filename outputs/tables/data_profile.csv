@@ -1,0 +1,10 @@
+field_name,data_type,total_rows,missing_count,missing_pct,distinct_count,min_value,q25_value,median_value,mean_value,q75_value,max_value,sample_examples
+invoice_no,object,1067371,0,0.0,53628,,,,,,,489434; 489435; 489436
+stock_code,object,1067371,0,0.0,5305,,,,,,,85048; 79323P; 79323W
+description,object,1067371,4382,0.41,5699,,,,,,,15CM CHRISTMAS GLASS BALL 20 LIGHTS; PINK CHERRY LIGHTS;  WHITE CHERRY LIGHTS
+quantity,int64,1067371,0,0.0,1057,-80995.0,1.0,3.0,9.9389,10.0,80995.0,12; 48; 24
+invoice_date,datetime64[us],1067371,0,0.0,47635,2009-12-01 07:45:00,,,,,2011-12-09 12:50:00,2009-12-01 07:45:00; 2009-12-01 07:46:00; 2009-12-01 09:06:00
+unit_price,float64,1067371,0,0.0,2807,-53594.36,1.25,2.1,4.6494,4.15,38970.0,6.95; 6.75; 2.1
+customer_id,float64,1067371,243007,22.77,5943,12346.0,13975.0,15255.0,15324.6385,16797.0,18287.0,13085.0; 13078.0; 15362.0
+country,str,1067371,0,0.0,43,,,,,,,United Kingdom; France; USA
+source_sheet,str,1067371,0,0.0,2,,,,,,,Year 2009-2010; Year 2010-2011
