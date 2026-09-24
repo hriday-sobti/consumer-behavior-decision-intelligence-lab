@@ -18,8 +18,7 @@ def generate_eda_figures():
     """Generates the 10 required exploratory data analysis visualizations answering specific analytical questions."""
     logger.info("Generating exploratory analysis figures...")
     path_config.figures_dir.mkdir(parents=True, exist_ok=True)
-
-    # Load data
+    # Load validated summaries from reporting export directory
     m_df = pd.read_csv(path_config.exports_dir / "monthly_summary.csv")
     c_df = pd.read_csv(path_config.exports_dir / "customer_summary.csv")
     s_df = pd.read_csv(path_config.exports_dir / "segment_summary.csv")

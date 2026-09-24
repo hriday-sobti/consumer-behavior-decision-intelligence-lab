@@ -10,8 +10,7 @@ from src.logging_config import logger
 def export_reporting_data():
     """Generates all 9 standardized reporting exports into outputs/exports/ and dashboard/powerbi/data_exports/."""
     logger.info("Generating standardized reporting exports...")
-    
-    # Load required source datasets
+    # Ingest analytical parquet models produced by upstream feature and lifecycle stages
     feat_df = pd.read_parquet(path_config.processed_data_dir / "customer_behavior_features.parquet")
     valid_tx = pd.read_parquet(path_config.processed_data_dir / "transactions_valid_purchases.parquet")
     seg_cust_df = pd.read_parquet(path_config.processed_data_dir / "customer_segment.parquet")
