@@ -25,3 +25,6 @@ pgdata/
 
 # Streamlit
 .streamlit/
+
+# HTML Visual figures (regenerable by pipeline)
+outputs/figures/*.html
