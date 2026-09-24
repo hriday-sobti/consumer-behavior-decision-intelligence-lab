@@ -1,7 +1,7 @@
 # Final Pipeline Execution Run Report
 
-- **Run Timestamp**: 2026-09-24 18:14:35 UTC
-- **Pipeline Runtime**: 174.11 seconds
+- **Run Timestamp**: 2026-09-24 18:33:22 UTC
+- **Pipeline Runtime**: 166.67 seconds
 - **Dataset Source**: UCI Machine Learning Repository (Online Retail II, DOI: 10.24432/C5CG6D)
 - **Source Observation Span**: 2009-12-01 07:45:00 to 2011-12-09 12:50:00 (approx. 24 continuous months)
 - **Analytical Reference Date**: 2011-12-10 00:00:00
@@ -32,7 +32,7 @@
 ## 3. Behavioral Segmentation Structure ($K=3$)
 
 - **Selected Cluster Count ($K$)**: 3
-- **Model Selection Criteria**: Smallest $K$ with Silhouette $\ge 90\%$ of peak and all cluster shares $\ge 5\%$.
+- **Model Selection Criteria**: Smallest $K$ with Silhouette >= 90% of peak and all cluster shares >= 5%.
 - **Silhouette Score**: 0.2749
 - **Inertia**: 16,148.04
 

@@ -9,8 +9,8 @@ Implements the 6 core analytical views:
   6. Methodology & Controls: Audit gates, pipeline controls, lineage, limitations
 """
 
-import sys
 from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -122,14 +122,14 @@ if page == "1. Executive Overview":
         # Monthly Spend Trend
         fig_m = go.Figure()
         fig_m.add_trace(go.Bar(x=m_df["year_month"], y=m_df["total_value"], name="Gross Spend (£)", marker_color="#1f4e78"))
-        fig_m.add_trace(go.Scatter(x=m_df["year_month"], y=m_df["total_orders"], name="Order Volume", yaxis="y2", line=dict(color="#d97706", width=2)))
+        fig_m.add_trace(go.Scatter(x=m_df["year_month"], y=m_df["total_orders"], name="Order Volume", yaxis="y2", line={"color": "#d97706", "width": 2}))
         fig_m.update_layout(
             title="Monthly Spend and Order Volume Trend",
-            xaxis_title="Month", yaxis=dict(title="Spend (£)"),
-            yaxis2=dict(title="Orders", overlaying="y", side="right"),
-            template="plotly_white", height=380, legend=dict(x=0.01, y=0.99)
+            xaxis_title="Month", yaxis={"title": "Spend (£)"},
+            yaxis2={"title": "Orders", "overlaying": "y", "side": "right"},
+            template="plotly_white", height=380, legend={"x": 0.01, "y": 0.99}
         )
-        st.plotly_chart(fig_m, use_container_width=True)
+        st.plotly_chart(fig_m, width='stretch')
 
     with col_right:
         # Segment Value Contribution
@@ -142,7 +142,7 @@ if page == "1. Executive Overview":
         )
         fig_s.update_traces(texttemplate="%{text:.1%}", textposition="outside")
         fig_s.update_layout(showlegend=False)
-        st.plotly_chart(fig_s, use_container_width=True)
+        st.plotly_chart(fig_s, width='stretch')
 
     # Lower Grid: Value Concentration Lorenz curve & State Distribution
     col_c1, col_c2 = st.columns(2)
@@ -153,15 +153,15 @@ if page == "1. Executive Overview":
             cum_vals = np.cumsum(sorted_vals) / np.sum(sorted_vals) * 100
             cum_custs = np.linspace(0, 100, len(cum_vals))
             fig_lor = go.Figure()
-            fig_lor.add_trace(go.Scatter(x=cum_custs, y=cum_vals, mode="lines", name="Observed Lorenz Curve", line=dict(color="#1f4e78", width=3)))
-            fig_lor.add_trace(go.Scatter(x=[0, 100], y=[0, 100], mode="lines", name="Parity", line=dict(color="#cbd5e1", dash="dash")))
+            fig_lor.add_trace(go.Scatter(x=cum_custs, y=cum_vals, mode="lines", name="Observed Lorenz Curve", line={"color": "#1f4e78", "width": 3}))
+            fig_lor.add_trace(go.Scatter(x=[0, 100], y=[0, 100], mode="lines", name="Parity", line={"color": "#cbd5e1", "dash": "dash"}))
             fig_lor.update_layout(
                 title="Customer Value Concentration (Empirical Lorenz Curve)",
                 xaxis_title="Cumulative Customer Percentile (%)",
                 yaxis_title="Cumulative Spend Share (%)",
                 template="plotly_white", height=360
             )
-            st.plotly_chart(fig_lor, use_container_width=True)
+            st.plotly_chart(fig_lor, width='stretch')
 
     with col_c2:
         state_counts = filtered_c["behavioral_state"].value_counts().reset_index()
@@ -173,7 +173,7 @@ if page == "1. Executive Overview":
             color_discrete_sequence=["#1f4e78", "#94a3b8", "#d97706", "#2e8b57", "#dc2626"]
         )
         fig_state.update_layout(showlegend=False)
-        st.plotly_chart(fig_state, use_container_width=True)
+        st.plotly_chart(fig_state, width='stretch')
 
 # ==============================================================================
 # VIEW 2: BEHAVIORAL SEGMENTS
@@ -199,7 +199,7 @@ elif page == "2. Behavioral Segments":
             "average_order_value": "£{:,.2f}",
             "median_interpurchase_gap": "{:,.1f}d"
         }),
-        use_container_width=True
+        width='stretch'
     )
 
     col1, col2 = st.columns(2)
@@ -212,7 +212,7 @@ elif page == "2. Behavioral Segments":
             template="plotly_white", height=420,
             color_discrete_sequence=["#1f4e78", "#2e8b57", "#94a3b8", "#d97706"]
         )
-        st.plotly_chart(fig_scat, use_container_width=True)
+        st.plotly_chart(fig_scat, width='stretch')
 
     with col2:
         # Box plot: Product Breadth by Segment
@@ -224,7 +224,7 @@ elif page == "2. Behavioral Segments":
             color_discrete_sequence=["#1f4e78", "#2e8b57", "#94a3b8", "#d97706"]
         )
         fig_box.update_layout(showlegend=False)
-        st.plotly_chart(fig_box, use_container_width=True)
+        st.plotly_chart(fig_box, width='stretch')
 
     # Narrative Segment Deep-Dive Cards
     st.subheader("Behavioral Characterization & Strategic Inquiries")
@@ -259,7 +259,7 @@ elif page == "3. Behavior Over Time":
                 fig_comp.add_trace(go.Bar(x=m_df["year_month"], y=m_df[metric_col], name=st_name, marker_color=col))
 
         fig_comp.update_layout(barmode="stack", template="plotly_white", height=400, xaxis_title="Month", yaxis_title="Customer Count")
-        st.plotly_chart(fig_comp, use_container_width=True)
+        st.plotly_chart(fig_comp, width='stretch')
 
     with col_t2:
         st.subheader("State Migration Matrix (Aggregated)")
@@ -269,10 +269,10 @@ elif page == "3. Behavior Over Time":
 
         fig_trans = px.imshow(
             state_prob, text_auto=".1%", aspect="auto",
-            labels=dict(x="Current State", y="Previous State", color="Transition Rate"),
+            labels={"x": "Current State", "y": "Previous State", "color": "Transition Rate"},
             color_continuous_scale="Blues", height=400
         )
-        st.plotly_chart(fig_trans, use_container_width=True)
+        st.plotly_chart(fig_trans, width='stretch')
 
     # Cohort Retention Matrix
     st.subheader("Acquisition Cohort Retention Matrix")
@@ -281,10 +281,10 @@ elif page == "3. Behavior Over Time":
     )
     fig_cohort = px.imshow(
         cohort_pivot, text_auto=".1%", aspect="auto",
-        labels=dict(x="Months Since Acquisition (Index)", y="Acquisition Cohort", color="Retention"),
+        labels={"x": "Months Since Acquisition (Index)", "y": "Acquisition Cohort", "color": "Retention"},
         color_continuous_scale="Teal", height=450
     )
-    st.plotly_chart(fig_cohort, use_container_width=True)
+    st.plotly_chart(fig_cohort, width='stretch')
 
 # ==============================================================================
 # VIEW 4: DECISION SIGNALS
@@ -305,7 +305,7 @@ elif page == "4. Decision Signals":
             color_discrete_sequence=["#1f4e78", "#2e8b57", "#d97706", "#eab308", "#dc2626", "#8b5cf6"]
         )
         fig_pie.update_layout(showlegend=False)
-        st.plotly_chart(fig_pie, use_container_width=True)
+        st.plotly_chart(fig_pie, width='stretch')
 
     with col_sig2:
         st.subheader("Signal Severity Breakdown")
@@ -316,7 +316,7 @@ elif page == "4. Decision Signals":
             barmode="stack", template="plotly_white", height=380,
             color_discrete_map={"High": "#dc2626", "Medium": "#f59e0b", "Low": "#94a3b8"}
         )
-        st.plotly_chart(fig_sev, use_container_width=True)
+        st.plotly_chart(fig_sev, width='stretch')
 
     st.subheader("Triggered Customer Accounts Detail Table")
     selected_sig_type = st.selectbox("Filter by Triggered Signal", ["All"] + sorted(sig_df["signal_name"].unique().tolist()))
@@ -331,7 +331,7 @@ elif page == "4. Decision Signals":
             "behavioral_state", "evidence_metric_1", "evidence_metric_2",
             "explanation", "signal_limitation"
         ]],
-        use_container_width=True
+        width='stretch'
     )
 
 # ==============================================================================
@@ -395,13 +395,13 @@ elif page == "6. Methodology & Controls":
         ctrl_df[[
             "control_id", "control_name", "population_affected", "affected_pct",
             "severity", "status", "impact", "recommended_resolution"
-        ]].style.applymap(
+        ]].style.map(
             lambda val: "background-color: #fee2e2; color: #991b1b;" if val == "FAIL"
             else ("background-color: #fef3c7; color: #92400e;" if val == "WARNING"
             else "background-color: #dcfce7; color: #166534;"),
             subset=["status"]
         ),
-        use_container_width=True
+        width='stretch'
     )
 
     st.subheader("Analytical Lineage Architecture")

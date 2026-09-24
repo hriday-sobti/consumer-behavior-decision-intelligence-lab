@@ -16,14 +16,11 @@ Tests 40+ discrete scenarios:
 import numpy as np
 import pandas as pd
 import pytest
+
 from src.cleaning.clean import classify_transaction_events
 from src.features.build_features import build_customer_features
 from src.features.rfm import build_rfm_scores
-from src.segmentation.cluster import (
-    evaluate_clusters,
-    fit_behavioral_segments,
-    prepare_clustering_features,
-)
+
 
 # 1. Edge Case: Single Customer Lifecycle Scenarios (10 cases)
 @pytest.mark.parametrize("n_orders,interval_days,spend_per_order", [

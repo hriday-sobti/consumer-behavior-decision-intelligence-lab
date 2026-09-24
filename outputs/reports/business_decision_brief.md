@@ -45,12 +45,12 @@ The system evaluated six deterministic, rule-based behavioral triggers:
 
 | Signal Identifier | Triggered Accounts | Behavioral Pattern | Recommended Test / Investigation |
 | :--- | :--- | :--- | :--- |
-| **`HIGH_VALUE_SOFTENING`** | **261** | Spend $\ge$ P80 (£2,910+) with recent spend drop $\le -25\%$ | Proactive commercial account manager audit to evaluate supplier switching or service friction. |
-| **`HIGH_FREQUENCY_LOW_VALUE`** | **325** | High order cadence ($\ge$ 8 orders) with depressed AOV ($\le$ £234) | Evaluate minimum order size thresholds or freight incentives to consolidate small baskets. |
-| **`EMERGING_BROADENING`** | **440** | Tenure $\le$ 90 days actively increasing distinct SKU breadth | Present category affinity recommendations during early checkout confirmation sequences. |
-| **`HISTORICAL_VALUE_DORMANT`** | **193** | Historical spend $\ge$ P80 with $> 120$ days of inactivity | Test targeted seasonal catalog re-engagement offer with 60-day holdout control evaluation. |
-| **`BROAD_ENGAGEMENT_SOFTENING`** | **345** | Breadth $\ge$ P70 (85+ SKUs) with $\ge 25\%$ decline in order cadence | Audit product category availability and stock-outs across core wholesale lines. |
-| **`POSITIVE_MOMENTUM`** | **2,044** | Double-digit synchronized growth ($\ge +25\%$ spend and frequency) | Guarantee supply-chain capacity and priority inventory allocation to avoid fulfillment bottlenecks. |
+| **`HIGH_VALUE_SOFTENING`** | **261** | Spend >= P80 (£2,910+) with recent spend drop <= -25% | Proactive commercial account manager audit to evaluate supplier switching or service friction. |
+| **`HIGH_FREQUENCY_LOW_VALUE`** | **325** | High order cadence (>= 8 orders) with depressed AOV (<= £234) | Evaluate minimum order size thresholds or freight incentives to consolidate small baskets. |
+| **`EMERGING_BROADENING`** | **440** | Tenure <= 90 days actively increasing distinct SKU breadth | Present category affinity recommendations during early checkout confirmation sequences. |
+| **`HISTORICAL_VALUE_DORMANT`** | **193** | Historical spend >= P80 with > 120 days of inactivity | Test targeted seasonal catalog re-engagement offer with 60-day holdout control evaluation. |
+| **`BROAD_ENGAGEMENT_SOFTENING`** | **345** | Breadth >= P70 (85+ SKUs) with >= 25% decline in order cadence | Audit product category availability and stock-outs across core wholesale lines. |
+| **`POSITIVE_MOMENTUM`** | **2,044** | Double-digit synchronized growth (>= +25% spend and frequency) | Guarantee supply-chain capacity and priority inventory allocation to avoid fulfillment bottlenecks. |
 
 ---
 
@@ -58,7 +58,7 @@ The system evaluated six deterministic, rule-based behavioral triggers:
 
 Because historical marketing interventions were not recorded, commercial initiatives should be evaluated using randomized holdout trials:
 - **Primary Success KPI**: 90-day spend recovery / reactivation rate compared against an uncontacted 20% holdout group.
-- **Guardrail Metric**: Order return and reversal rate (must not exceed baseline by $\ge 10\%$).
+- **Guardrail Metric**: Order return and reversal rate (must not exceed baseline by >= 10%).
 - **Success Rule**: Net incremental gross margin post-intervention must exceed operational contact costs.
 
 ---

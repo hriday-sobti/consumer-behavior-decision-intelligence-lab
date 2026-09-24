@@ -12,7 +12,9 @@ Tests 25+ discrete database checks:
 
 import pytest
 from sqlalchemy import text
+
 from src.ingestion.db import get_engine
+
 
 # 1. Dimension Tables Integrity Checks (6 cases)
 @pytest.mark.parametrize("dim_table,pk_col", [

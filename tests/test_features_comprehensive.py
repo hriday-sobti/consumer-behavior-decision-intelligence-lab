@@ -13,8 +13,10 @@ Tests 40+ discrete scenarios:
 import numpy as np
 import pandas as pd
 import pytest
+
 from src.features.build_features import build_customer_features
 from src.features.rfm import build_rfm_scores
+
 
 # 1. Eligibility Rule Boundary Scenarios (8 cases)
 @pytest.mark.parametrize("order_count,tenure_days,expected_insufficient", [

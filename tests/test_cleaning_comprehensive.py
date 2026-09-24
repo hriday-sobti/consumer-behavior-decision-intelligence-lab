@@ -14,7 +14,9 @@ Tests 35+ discrete scenarios:
 import numpy as np
 import pandas as pd
 import pytest
+
 from src.cleaning.clean import EventClass, classify_transaction_events, clean_transactions
+
 
 # 1. Parameterized Event Classification Scenarios (20 cases)
 @pytest.mark.parametrize("inv,stock,desc,q,price,cid,date,expected_class", [

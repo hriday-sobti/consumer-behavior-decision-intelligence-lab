@@ -7,7 +7,9 @@ Tests 15+ discrete scenarios:
 
 import pandas as pd
 import pytest
+
 from src.config import path_config
+
 
 @pytest.mark.parametrize("export_filename,min_row_count,expected_columns", [
     ("customer_summary.csv", 5000, ["customer_id", "total_value", "lifetime_orders", "segment_name", "behavioral_state"]),

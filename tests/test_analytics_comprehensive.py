@@ -8,16 +8,18 @@ Tests 45+ discrete scenarios:
 """
 
 from datetime import date
+
 import numpy as np
 import pandas as pd
 import pytest
+
 from src.decisions.signals import build_decision_signals
 from src.lifecycle.snapshots import build_monthly_snapshots
 from src.segmentation.cluster import (
     evaluate_clusters,
-    fit_behavioral_segments,
     prepare_clustering_features,
 )
+
 
 # 1. Parameterized Clustering Stability Checks across Seeds (5 cases)
 @pytest.mark.parametrize("seed,candidate_k", [
@@ -43,7 +45,7 @@ def test_parameterized_clustering_execution(seed, candidate_k):
         "interpurchase_gap_cv": np.random.uniform(0.1, 1.0, size=n),
         "reversal_rate": np.random.uniform(0.0, 0.04, size=n)
     })
-    eligible, trans, scaled, _ = prepare_clustering_features(df)
+    _eligible, _trans, scaled, _ = prepare_clustering_features(df)
     sel_k, eval_df = evaluate_clusters(scaled, k_range=candidate_k, seed=seed)
     assert sel_k in candidate_k
     assert len(eval_df) == len(candidate_k)
