@@ -2,6 +2,8 @@
 
 A transactional customer analytics and behavioral decision-support system modeling commercial wholesale and retail purchasing dynamics.
 
+**Python 3.10+** | **Database:** SQLite & PostgreSQL | **Tests:** 229 Passing | **Power BI Ready** | **Excel Scenario Model** | **Author:** Hriday Singh Sobti
+
 ---
 
 ## 1. Overview & Analytical Objective
