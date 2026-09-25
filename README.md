@@ -7,8 +7,13 @@
 * **Interactive Streamlit Decision Workbench**: Launch locally via `streamlit run app/app.py`
 * **Detailed Project Report**: [Customer Behavior Decision Intelligence Report (PDF)](docs/customer_behavior_decision_intelligence_report.pdf)
 * **Project Repository**: [https://github.com/hriday-sobti/consumer-behavior-decision-intelligence-lab](https://github.com/hriday-sobti/consumer-behavior-decision-intelligence-lab)
-
-**Python 3.10+** | **PostgreSQL** | **DuckDB** | **Power BI Ready** | **Tests: 229 Passing** | **Cross-Engine Reconciliation** | **Author:** Hriday Singh Sobti
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![DuckDB](https://img.shields.io/badge/DuckDB-1.0+-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)](https://duckdb.org/)
+[![Power BI](https://img.shields.io/badge/Power_BI-Ready-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)](dashboard/powerbi/)
+[![Tests](https://img.shields.io/badge/Tests-229_Passing-2EA44F?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Reconciliation](https://img.shields.io/badge/Reconciliation-Multi--Engine_Validated-1F4E78?style=for-the-badge)](src/validation/reconciliation.py)
+[![Author](https://img.shields.io/badge/Author-Hriday_Singh_Sobti-0F172A?style=for-the-badge&logo=github&logoColor=white)](https://github.com/hriday-sobti)
 
 ---
 ## Overview
