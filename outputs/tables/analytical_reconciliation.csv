@@ -1,0 +1,10 @@
+Metric Dimension,PostgreSQL,DuckDB,Variance,Status
+Cleaned Transactions (Staging),"1,033,034","1,033,034",0.0,MATCH
+Staging Gross Value,"£18,854,981.85","£18,854,981.85",0.0,MATCH
+Valid Purchase Lines,"779,423","779,423",0.0,MATCH
+Total Distinct Orders (Invoices),"36,969","36,969",0.0,MATCH
+Gross Valid Purchase Spend,"£17,374,252.42","£17,374,252.42",0.0,MATCH
+Total Identified Customers,"5,878","5,878",0.0,MATCH
+Customer Feature Spend Total,"£17,374,252.42","£17,374,252.42",-0.0,MATCH
+Eligible Clustered Accounts,"4,023","4,023",0.0,MATCH
+Segmented Spend Contribution,"£16,549,691.51","£16,549,691.51",-0.0,MATCH

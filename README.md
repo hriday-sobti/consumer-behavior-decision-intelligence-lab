@@ -8,10 +8,9 @@
 * **Detailed Project Report**: [Customer Behavior Decision Intelligence Report (PDF)](docs/customer_behavior_decision_intelligence_report.pdf)
 * **Project Repository**: [https://github.com/hriday-sobti/consumer-behavior-decision-intelligence-lab](https://github.com/hriday-sobti/consumer-behavior-decision-intelligence-lab)
 
-**Python 3.10+** | **Database:** SQLite & PostgreSQL | **Tests:** 229 Passing | **Power BI Ready** | **Excel Scenario Model** | **Author:** Hriday Singh Sobti
+**Python 3.10+** | **PostgreSQL** | **DuckDB** | **Power BI Ready** | **Tests: 229 Passing** | **Cross-Engine Reconciliation** | **Author:** Hriday Singh Sobti
 
 ---
-
 ## Overview
 
 The Consumer Behavior Decision Intelligence Lab (CBDIL) converts raw transactional sales records into an auditable customer behavioral modeling and commercial decision-support system. Built around longitudinal purchase ledgers from a UK-based merchant, the system addresses a fundamental limitation of traditional transaction reporting: raw invoice rows record discrete sales events, but fail to provide visibility into customer-level concentration, order cadence decay, catalog drift, or actionable decision triggers.
@@ -48,6 +47,23 @@ The system moves through an auditable analytical chain:
 
 ---
 
+## Cross-Engine Reconciliation (PostgreSQL & DuckDB)
+
+To verify analytical integrity and eliminate grain mismatch, CBDIL implements multi-engine cross-validation comparing PostgreSQL relational queries directly against DuckDB vector queries across raw Parquet and CSV artifacts (`src/validation/reconciliation.py`):
+
+| Analytical Metric Dimension | PostgreSQL (Engine) | DuckDB (Parquet Artifacts) | Variance | Audit Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **Cleaned Transactions (Staging)** | 1,033,034 | 1,033,034 | 0.0 | **MATCH** |
+| **Staging Gross Line Value** | £18,854,981.85 | £18,854,981.85 | 0.0 | **MATCH** |
+| **Valid Purchase Lines** | 779,423 | 779,423 | 0.0 | **MATCH** |
+| **Total Invoices (Order Grain)** | 36,969 | 36,969 | 0.0 | **MATCH** |
+| **Gross Valid Purchase Spend** | £17,374,252.42 | £17,374,252.42 | 0.0 | **MATCH** |
+| **Total Identified Customers** | 5,878 | 5,878 | 0.0 | **MATCH** |
+| **Customer Feature Spend Total** | £17,374,252.42 | £17,374,252.42 | 0.0 | **MATCH** |
+| **Eligible Clustered Accounts** | 4,023 | 4,023 | 0.0 | **MATCH** |
+| **Segmented Spend Contribution** | £16,549,691.51 | £16,549,691.51 | 0.0 | **MATCH** |
+
+---
 ## New Contributions and Improvements
 
 | Analytical Dimension | Standard Baseline Approach | CBDIL Systematic Contribution |
