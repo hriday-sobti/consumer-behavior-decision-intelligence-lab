@@ -1,7 +1,5 @@
 # Consumer Behavior Decision Intelligence Lab (CBDIL)
 
-[View the Detailed Project Report (PDF)](docs/customer_behavior_decision_intelligence_report.pdf)
-
 ## Deliverables
 
 * **Interactive Streamlit Decision Workbench**: Launch locally via `streamlit run app/app.py`
