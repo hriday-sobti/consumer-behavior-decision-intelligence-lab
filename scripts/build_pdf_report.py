@@ -1,4 +1,4 @@
-"""Compiles the comprehensive, publication-grade analytical project report to PDF using ReportLab."""
+"""Compiles the comprehensive, publication-grade analytical project report to a perfectly balanced 6-page PDF using ReportLab."""
 
 import os
 from pathlib import Path
@@ -47,28 +47,28 @@ class NumberedCanvas(canvas.Canvas):
         self.setFillColor(colors.HexColor("#64748B"))
 
         # Running Header
-        self.drawString(54, 11 * 72 - 36, "Consumer Behavior Decision Intelligence Lab | Analytical Project Dossier")
-        self.setStrokeColor(colors.HexColor("#E2E8F0"))
+        self.drawString(45, 11 * 72 - 30, "Consumer Behavior Decision Intelligence Lab | Analytical Project Dossier")
+        self.setStrokeColor(colors.HexColor("#CBD5E1"))
         self.setLineWidth(0.5)
-        self.line(54, 11 * 72 - 42, 8.5 * 72 - 54, 11 * 72 - 42)
+        self.line(45, 11 * 72 - 34, 8.5 * 72 - 45, 11 * 72 - 34)
 
         # Running Footer
         page_str = f"Page {self._pageNumber} of {page_count}"
-        self.drawRightString(8.5 * 72 - 54, 36, page_str)
-        self.drawString(54, 36, "Author: Hriday Singh Sobti | Production Technical Dossier")
-        self.line(54, 46, 8.5 * 72 - 54, 46)
+        self.drawRightString(8.5 * 72 - 45, 28, page_str)
+        self.drawString(45, 28, "Author: Hriday Singh Sobti | Production Technical Dossier")
+        self.line(45, 38, 8.5 * 72 - 45, 38)
         self.restoreState()
 
 
 def build_pdf_report():
-    print(f"Compiling PDF report to {PDF_OUTPUT_PATH}...")
+    print(f"Compiling balanced PDF report to {PDF_OUTPUT_PATH}...")
     doc = SimpleDocTemplate(
         str(PDF_OUTPUT_PATH),
         pagesize=letter,
-        leftMargin=54,
-        rightMargin=54,
-        topMargin=54,
-        bottomMargin=54
+        leftMargin=45,
+        rightMargin=45,
+        topMargin=42,
+        bottomMargin=42
     )
 
     styles = getSampleStyleSheet()
@@ -79,41 +79,37 @@ def build_pdf_report():
     c_dark = colors.HexColor("#0F172A")      # Slate 900
     c_body = colors.HexColor("#334155")      # Slate 700
     c_gray_bg = colors.HexColor("#F8FAFC")
-    c_border = colors.HexColor("#E2E8F0")
+    c_border = colors.HexColor("#CBD5E1")
 
     # Typography Hierarchy
     title_style = ParagraphStyle(
         'CoverTitle', parent=styles['Normal'],
-        fontName='Helvetica-Bold', fontSize=22, leading=26, textColor=c_primary, spaceAfter=8
+        fontName='Helvetica-Bold', fontSize=20, leading=24, textColor=c_primary, spaceAfter=4
     )
     subtitle_style = ParagraphStyle(
         'CoverSub', parent=styles['Normal'],
-        fontName='Helvetica', fontSize=11, leading=15, textColor=c_body, spaceAfter=14
+        fontName='Helvetica', fontSize=10.5, leading=14, textColor=c_body, spaceAfter=8
+    )
+    meta_style = ParagraphStyle(
+        'Meta', parent=styles['Normal'],
+        fontName='Helvetica', fontSize=8, leading=11, textColor=c_body, spaceAfter=8
     )
     h1_style = ParagraphStyle(
         'Header1', parent=styles['Normal'],
-        fontName='Helvetica-Bold', fontSize=13, leading=17, textColor=c_primary,
-        spaceBefore=14, spaceAfter=6, keepWithNext=True
-    )
-    ParagraphStyle(
-        'Header2', parent=styles['Normal'],
-        fontName='Helvetica-Bold', fontSize=10.5, leading=14, textColor=c_dark,
+        fontName='Helvetica-Bold', fontSize=11, leading=14, textColor=c_primary,
         spaceBefore=10, spaceAfter=4, keepWithNext=True
     )
     body_style = ParagraphStyle(
         'Body', parent=styles['Normal'],
-        fontName='Helvetica', fontSize=8.5, leading=12, textColor=c_body, spaceAfter=6
-    )
-    ParagraphStyle(
-        'BodyBold', parent=body_style, fontName='Helvetica-Bold'
+        fontName='Helvetica', fontSize=8, leading=11, textColor=c_body, spaceAfter=5
     )
     callout_style = ParagraphStyle(
         'Callout', parent=styles['Normal'],
-        fontName='Helvetica-Oblique', fontSize=8.5, leading=12, textColor=colors.HexColor("#1E293B"), spaceAfter=0
+        fontName='Helvetica-Oblique', fontSize=7.5, leading=10.5, textColor=colors.HexColor("#1E293B"), spaceAfter=0
     )
     table_cell = ParagraphStyle(
         'TableCell', parent=styles['Normal'],
-        fontName='Helvetica', fontSize=7.5, leading=10, textColor=c_body
+        fontName='Helvetica', fontSize=7, leading=9.5, textColor=c_body
     )
     table_cell_bold = ParagraphStyle(
         'TableCellBold', parent=table_cell, fontName='Helvetica-Bold', textColor=c_dark
@@ -129,17 +125,17 @@ def build_pdf_report():
     # =========================================================================
     story.append(Paragraph("Consumer Behavior Decision Intelligence Lab", title_style))
     story.append(Paragraph("A Multi-Dimensional Transactional Behavioral Modeling & Decision-Support System", subtitle_style))
-    story.append(Paragraph("<b>Author:</b> Hriday Singh Sobti &nbsp;|&nbsp; <b>Framework:</b> Python 3.10+, PostgreSQL & SQLite, Streamlit, Power BI &nbsp;|&nbsp; <b>Test Verification:</b> 229 Passing Scenarios", body_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=c_primary, spaceBefore=4, spaceAfter=12))
+    story.append(Paragraph("<b>Author:</b> Hriday Singh Sobti &nbsp;|&nbsp; <b>Framework:</b> Python 3.10+, PostgreSQL & SQLite, Streamlit, Power BI &nbsp;|&nbsp; <b>Test Verification:</b> 229 Passing Scenarios", meta_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_primary, spaceBefore=2, spaceAfter=8))
 
     # =========================================================================
-    # EXECUTIVE SUMMARY
+    # 1. EXECUTIVE SUMMARY
     # =========================================================================
     story.append(Paragraph("1. Executive Summary", h1_style))
     exec_summary_text = (
-        "Enterprise transactional ledgers record granular sales activity—order codes, product SKUs, invoice dates, "
-        "quantities, and price points—but obscure underlying customer purchasing behavior. In raw sales files, recurring wholesale "
-        "commercial accounts appear identical in record schema to one-off retail consumers. Standard aggregate reporting answers "
+        "Enterprise transactional ledgers record granular operational sales entries—invoice numbers, product codes, "
+        "timestamps, units, and price points—but conceal underlying account purchasing behavior. In raw sales files, recurring wholesale "
+        "commercial accounts appear identical in schema to one-off retail consumers. Standard aggregate reporting answers "
         "what products moved, but fails to reveal account-level concentration, order cadence decay, basket drift, or churn risk. "
         "The <b>Consumer Behavior Decision Intelligence Lab (CBDIL)</b> establishes an end-to-end analytical architecture that bridges "
         "raw transaction logs and commercial decision-support. Built on two years of longitudinal transaction records from the "
@@ -163,20 +159,20 @@ def build_pdf_report():
         [Paragraph("Selected Behavioral Segments", table_cell_bold), Paragraph("K = 3 Segments", table_cell), Paragraph("Silhouette score = 0.2749, satisfying min 5% cluster share rule", table_cell)],
         [Paragraph("High-Value Softening Risk", table_cell_bold), Paragraph("261 accounts", table_cell), Paragraph("Top spend quintile with >= 25% drop in recent 90-day spend", table_cell)],
     ]
-    t_summary = Table(summary_data, colWidths=[130, 110, 264])
+    t_summary = Table(summary_data, colWidths=[120, 100, 302])
     t_summary.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
         ('GRID', (0,0), (-1,-1), 0.5, c_border),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, c_gray_bg]),
     ]))
     story.append(t_summary)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
 
     # =========================================================================
-    # NEW CONTRIBUTIONS AND IMPROVEMENTS
+    # 2. NEW CONTRIBUTIONS AND IMPROVEMENTS
     # =========================================================================
     story.append(Paragraph("2. New Contributions and Improvements", h1_style))
     story.append(Paragraph(
@@ -222,19 +218,19 @@ def build_pdf_report():
             Paragraph("Continuous audit layer tracking 6 systematic data quality controls directly inside the reporting layer with PASS/WARNING status.", table_cell)
         ],
     ]
-    t_contrib = Table(contrib_data, colWidths=[110, 160, 234])
+    t_contrib = Table(contrib_data, colWidths=[105, 145, 272])
     t_contrib.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), c_secondary),
         ('GRID', (0,0), (-1,-1), 0.5, c_border),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, c_gray_bg]),
     ]))
     story.append(t_contrib)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
 
     # =========================================================================
-    # THE BUSINESS PROBLEM & ANALYTICAL WORKFLOW
+    # 3. THE BUSINESS PROBLEM & ANALYTICAL WORKFLOW
     # =========================================================================
     story.append(Paragraph("3. Business Problem & Analytical Workflow", h1_style))
     story.append(Paragraph(
@@ -254,7 +250,7 @@ def build_pdf_report():
     story.append(Spacer(1, 8))
 
     # =========================================================================
-    # DATA QUALITY & EVENT CLASSIFICATION
+    # 4. DATA QUALITY & EVENT CLASSIFICATION
     # =========================================================================
     story.append(Paragraph("4. Data Quality, Event Classification & Governance", h1_style))
     story.append(Paragraph(
@@ -270,19 +266,19 @@ def build_pdf_report():
         [Paragraph("Non-Cancellation Negatives", table_cell_bold), Paragraph("3,462", table_cell), Paragraph("0.32%", table_cell), Paragraph("Distorts sales value with damaged goods", table_cell), Paragraph("Classified as Class 2 (REVERSAL_OR_RETURN); separated from gross purchase totals.", table_cell)],
         [Paragraph("Zero / Negative Prices", table_cell_bold), Paragraph("6,207", table_cell), Paragraph("0.58%", table_cell), Paragraph("Samples & bad-debt accounting entries", table_cell), Paragraph("Classified as Class 4; filtered prior to commercial value modeling.", table_cell)],
     ]
-    t_dq = Table(dq_data, colWidths=[105, 55, 45, 120, 179])
+    t_dq = Table(dq_data, colWidths=[100, 50, 42, 115, 215])
     t_dq.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('GRID', (0,0), (-1,-1), 0.5, c_border),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, c_gray_bg]),
     ]))
     story.append(t_dq)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
 
     # =========================================================================
-    # MACRO TRENDS & EMPIRICAL FINDINGS (FIGURE 1 & 2)
+    # 5. MACRO TRENDS & EMPIRICAL FINDINGS (FIGURES 1 & 2)
     # =========================================================================
     story.append(Paragraph("5. Macro Purchasing Dynamics & Concentration Analysis", h1_style))
     story.append(Paragraph(
@@ -293,8 +289,8 @@ def build_pdf_report():
     # Embed Figure 1
     fig1_path = FIGURES_DIR / "fig1_monthly_trend.png"
     if fig1_path.exists():
-        story.append(Image(str(fig1_path), width=500, height=230))
-        story.append(Spacer(1, 4))
+        story.append(Image(str(fig1_path), width=480, height=210))
+        story.append(Spacer(1, 3))
         story.append(Paragraph(
             "<b>Figure 1: Monthly Gross Spend and Order Volume Trend (2009-12 to 2011-12).</b> "
             "<i>What it shows:</i> Discrete monthly transaction value (bars, left axis) and total invoice counts (line, right axis). "
@@ -303,13 +299,13 @@ def build_pdf_report():
             "<i>Actionable takeaway:</i> Purchasing slowdowns in Q1 represent expected distributor replenishment lulls, whereas decelerations in Q3/Q4 signal abnormal account attrition.",
             callout_style
         ))
-        story.append(Spacer(1, 8))
+        story.append(Spacer(1, 6))
 
     # Embed Figure 2
     fig2_path = FIGURES_DIR / "fig2_lorenz_curve.png"
     if fig2_path.exists():
-        story.append(Image(str(fig2_path), width=440, height=240))
-        story.append(Spacer(1, 4))
+        story.append(Image(str(fig2_path), width=430, height=215))
+        story.append(Spacer(1, 3))
         story.append(Paragraph(
             "<b>Figure 2: Customer Spend Concentration (Empirical Lorenz Curve).</b> "
             "<i>What it shows:</i> Cumulative customer population percentile vs cumulative gross spend contribution. "
@@ -318,10 +314,10 @@ def build_pdf_report():
             "<i>Actionable takeaway:</i> Financial performance is heavily exposed to a narrow wholesale core, validating the need for dedicated account capacity protection.",
             callout_style
         ))
-        story.append(Spacer(1, 10))
+        story.append(Spacer(1, 8))
 
     # =========================================================================
-    # BEHAVIORAL SEGMENTATION & DEEP DIVE (FIGURE 3)
+    # 6. BEHAVIORAL SEGMENTATION & DEEP DIVE (FIGURE 3)
     # =========================================================================
     story.append(Paragraph("6. Behavioral Segmentation Architecture & Cluster Profiles", h1_style))
     story.append(Paragraph(
@@ -333,8 +329,8 @@ def build_pdf_report():
     # Embed Figure 3
     fig3_path = FIGURES_DIR / "fig3_segment_comparison.png"
     if fig3_path.exists():
-        story.append(Image(str(fig3_path), width=480, height=220))
-        story.append(Spacer(1, 4))
+        story.append(Image(str(fig3_path), width=470, height=195))
+        story.append(Spacer(1, 3))
         story.append(Paragraph(
             "<b>Figure 3: Value Contribution Across Empirical Behavioral Segments.</b> "
             "<i>What it shows:</i> Gross historical spend (£ Millions) and relative spend share across the three identified segments. "
@@ -342,7 +338,7 @@ def build_pdf_report():
             "while 44.1% of accounts (Segment 1) account for only 12.4% (£2.05M) despite their numerical dominance.",
             callout_style
         ))
-        story.append(Spacer(1, 8))
+        story.append(Spacer(1, 6))
 
     seg_table_data = [
         [Paragraph("Segment Name", table_cell_header), Paragraph("Account Count", table_cell_header), Paragraph("Spend Share", table_cell_header), Paragraph("Median Spend", table_cell_header), Paragraph("Median Orders", table_cell_header), Paragraph("Median Recency", table_cell_header), Paragraph("Median SKUs", table_cell_header), Paragraph("Strategic Inquiry", table_cell_header)],
@@ -377,19 +373,19 @@ def build_pdf_report():
             Paragraph("What proportion represents seasonal holiday buyers vs ceased operations?", table_cell)
         ],
     ]
-    t_seg = Table(seg_table_data, colWidths=[90, 60, 65, 55, 45, 50, 45, 94])
+    t_seg = Table(seg_table_data, colWidths=[90, 60, 65, 55, 45, 50, 45, 112])
     t_seg.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('GRID', (0,0), (-1,-1), 0.5, c_border),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, c_gray_bg]),
     ]))
     story.append(t_seg)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
 
     # =========================================================================
-    # DECISION SIGNALS & ACTION STRATEGIES (FIGURE 4)
+    # 7. DECISION SIGNALS & ACTION STRATEGIES (FIGURE 4)
     # =========================================================================
     story.append(Paragraph("7. Deterministic Decision Signals & Action Strategies", h1_style))
     story.append(Paragraph(
@@ -400,8 +396,8 @@ def build_pdf_report():
     # Embed Figure 4
     fig4_path = FIGURES_DIR / "fig4_decision_signals.png"
     if fig4_path.exists():
-        story.append(Image(str(fig4_path), width=480, height=220))
-        story.append(Spacer(1, 4))
+        story.append(Image(str(fig4_path), width=470, height=200))
+        story.append(Spacer(1, 3))
         story.append(Paragraph(
             "<b>Figure 4: Triggered Decision Signals by Severity Tier.</b> "
             "<i>What it shows:</i> Volume of customer accounts meeting deterministic signal trigger rules, broken down by severity tier (High, Medium, Low). "
@@ -409,7 +405,7 @@ def build_pdf_report():
             "in 261 accounts flagged under HIGH_VALUE_SOFTENING, representing £2.56M in cumulative historical spend.",
             callout_style
         ))
-        story.append(Spacer(1, 8))
+        story.append(Spacer(1, 6))
 
     signal_table_data = [
         [Paragraph("Signal Identifier", table_cell_header), Paragraph("Exact Trigger Rule", table_cell_header), Paragraph("Accounts", table_cell_header), Paragraph("Cumulative Spend", table_cell_header), Paragraph("Possible Business Action", table_cell_header), Paragraph("Evaluation KPI / Guardrail", table_cell_header)],
@@ -462,19 +458,19 @@ def build_pdf_report():
             Paragraph("OTIF Order Fulfillment / Delivery Delay Rate", table_cell)
         ],
     ]
-    t_sig = Table(signal_table_data, colWidths=[95, 105, 40, 65, 105, 94])
+    t_sig = Table(signal_table_data, colWidths=[90, 105, 38, 65, 114, 110])
     t_sig.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), c_secondary),
         ('GRID', (0,0), (-1,-1), 0.5, c_border),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, c_gray_bg]),
     ]))
     story.append(t_sig)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
 
     # =========================================================================
-    # DETAILED DASHBOARD ARCHITECTURE & USER JOURNEY
+    # 8. DETAILED DASHBOARD ARCHITECTURE & USER JOURNEY
     # =========================================================================
     story.append(Paragraph("8. Dashboard Architecture & Interactive User Journey", h1_style))
     story.append(Paragraph(
@@ -521,19 +517,19 @@ def build_pdf_report():
             Paragraph("Pre-contact audit of individual wholesale client purchasing history and risk factors.", table_cell)
         ],
     ]
-    t_dash = Table(dash_pages, colWidths=[90, 130, 140, 144])
+    t_dash = Table(dash_pages, colWidths=[85, 125, 145, 167])
     t_dash.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('GRID', (0,0), (-1,-1), 0.5, c_border),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, c_gray_bg]),
     ]))
     story.append(t_dash)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
 
     # =========================================================================
-    # END-TO-END CUSTOMER WALKTHROUGH
+    # 9. END-TO-END CUSTOMER WALKTHROUGH
     # =========================================================================
     story.append(Paragraph("9. End-to-End Account Walkthrough (Customer #14156)", h1_style))
     story.append(Paragraph(
@@ -550,10 +546,10 @@ def build_pdf_report():
         "7. <b>Operational Action:</b> Linked to Strategy <b>STRAT-01</b> for proactive commercial outreach, evaluated via a 20% holdout control trial with a 90-day recovery window.",
         callout_style
     ))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
 
     # =========================================================================
-    # SYSTEM CONTROLS, BOUNDARIES & CONCLUSION
+    # 10. SYSTEM CONTROLS, BOUNDARIES & CONCLUSION
     # =========================================================================
     story.append(Paragraph("10. System Controls, Limitations & Technical Conclusion", h1_style))
     story.append(Paragraph(
@@ -567,8 +563,8 @@ def build_pdf_report():
         "5. <b>Zero Baseline Discontinuities:</b> Accounts with zero orders in prior baseline periods are evaluated via deterministic default momentum rates rather than artificial interpolation.",
         body_style
     ))
-    story.append(Spacer(1, 8))
-    story.append(HRFlowable(width="100%", thickness=1, color=c_border, spaceBefore=4, spaceAfter=8))
+    story.append(Spacer(1, 6))
+    story.append(HRFlowable(width="100%", thickness=1, color=c_border, spaceBefore=2, spaceAfter=6))
     story.append(Paragraph(
         "<b>Technical Conclusion:</b> The Consumer Behavior Decision Intelligence Lab establishes an auditable, reproducible, "
         "and statistically disciplined customer intelligence framework. By transforming raw transactional data into multi-dimensional "
