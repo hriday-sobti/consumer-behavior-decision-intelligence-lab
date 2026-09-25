@@ -1,247 +1,159 @@
 # Consumer Behavior Decision Intelligence Lab (CBDIL)
 
-A transactional customer analytics and behavioral decision-support system modeling commercial wholesale and retail purchasing dynamics.
+[View the Detailed Project Report (PDF)](docs/customer_behavior_decision_intelligence_report.pdf)
+
+## Deliverables
+
+* **Interactive Streamlit Decision Workbench**: Launch locally via `streamlit run app/app.py`
+* **Detailed Project Report**: [Customer Behavior Decision Intelligence Report (PDF)](docs/customer_behavior_decision_intelligence_report.pdf)
+* **Project Repository**: [https://github.com/hriday-sobti/consumer-behavior-decision-intelligence-lab](https://github.com/hriday-sobti/consumer-behavior-decision-intelligence-lab)
 
 **Python 3.10+** | **Database:** SQLite & PostgreSQL | **Tests:** 229 Passing | **Power BI Ready** | **Excel Scenario Model** | **Author:** Hriday Singh Sobti
 
 ---
 
-## 1. Overview & Analytical Objective
+## Overview
 
-The Consumer Behavior Decision Intelligence Lab (CBDIL) answers a practical progression of commercial inquiries:
-1. What does the customer base look like across structural spend and order dimensions?
-2. How active and concentrated is purchasing value across accounts?
-3. Which behavioral customer groups are genuinely distinct across value, cadence, breadth, stability, and momentum?
-4. How do accounts migrate between behavioral lifecycle states month-over-month?
-5. Where do acute signals of deceleration or expansion emerge, and what testable actions should commercial teams evaluate?
+The Consumer Behavior Decision Intelligence Lab (CBDIL) converts raw transactional sales records into an auditable customer behavioral modeling and commercial decision-support system. Built around longitudinal purchase ledgers from a UK-based merchant, the system addresses a fundamental limitation of traditional transaction reporting: raw invoice rows record discrete sales events, but fail to provide visibility into customer-level concentration, order cadence decay, catalog drift, or actionable decision triggers.
 
-Rather than compressing customer behavior into a single score, the system represents customer behavior across five measurable dimensions:
-1. **Value**: Cumulative revenue, Average Order Value (AOV), median order spend.
-2. **Activity**: Recency intervals (elapsed days since last purchase), transaction counts, active months.
-3. **Breadth**: Unique catalog SKUs purchased, average items per basket.
-4. **Stability**: Interpurchase gap variation and order interval predictability.
+Rather than compressing customer behavior into a single score, the system models accounts across five measurable dimensions:
+1. **Value**: Cumulative gross revenue, Average Order Value (AOV), and median basket spend.
+2. **Activity**: Recency intervals (elapsed days since last purchase), transaction counts, and active months.
+3. **Breadth**: Unique catalog SKUs purchased and average items per order.
+4. **Stability**: Interpurchase gap variation and order interval predictability ($\sigma_{\text{gap}} / \mu_{\text{gap}}$).
 5. **Momentum**: Recent 90-day vs prior 90-day trajectory across spend, frequency, and SKU breadth.
 
 ---
 
-## 2. Dataset & Provenance
+## Analytical Problem
 
-The system is built on the official **UCI Online Retail II** longitudinal transaction dataset covering two continuous years of transaction activity (December 1, 2009 to December 9, 2011).
-
-- **Official Citation DOI**: [10.24432/C5CG6D](https://doi.org/10.24432/C5CG6D)
-- **Raw Records**: 1,067,371 rows across two sheets (`Year 2009-2010` and `Year 2010-2011`).
-- **Cleaned Valid Purchases**: 779,423 line items representing 36,969 validated orders across 5,878 distinct customer accounts.
-- **Provenance Rules**: Raw files in `data/raw/` are strictly read-only and immutable. All transformations are applied downstream.
-
----
-
-## 3. Analytical Pipeline Architecture
-
-The end-to-end pipeline enforces strict separation across analytical layers:
-
-```
-RAW WORKBOOK (data/raw/)
-  ↓
-PROFILING & EVENT PRECEDENCE CLASSIFICATION (Class 1-4)
-  ↓
-DEDUPLICATION & STAGING (PostgreSQL: staging.raw_retail_transactions)
-  ↓
-STAR SCHEMA MODEL (analytics.dim_* & analytics.fact_*)
-  ↓
-5-DIMENSIONAL FEATURE ENGINEERING (analytics.customer_behavior_features)
-  ↓
-K-MEANS BEHAVIORAL SEGMENTATION (analytics.customer_segment)
-  ↓
-LONGITUDINAL MONTHLY SNAPSHOTS (analytics.customer_monthly_snapshot)
-  ↓
-LIFECYCLE STATE MACHINE & TRANSITIONS (analytics.state_transition_matrix)
-  ↓
-DETERMINISTIC DECISION SIGNALS (analytics.customer_decision_signal)
-  ↓
-REPORTING EXPORTS & AUDIT CONTROLS (reporting.summary views & CSVs)
-  ↓
-INTERACTIVE WORKBENCHES (Streamlit Application & Power BI Semantic Model)
-```
+In commercial wholesale and retail operations, gross sales totals frequently conceal underlying account volatility:
+* **The Concentration Dilemma**: A small fraction of wholesale commercial buyers generates the majority of revenue, but their order patterns are naturally lumpy, making standard monthly averages misleading.
+* **The Static RFM Flaw**: Classical recency, frequency, and monetary scores measure lifetime totals but cannot detect whether an account is actively accelerating or in acute contraction relative to its own baseline.
+* **The Churn Blind Spot**: When a major client reduces order volume by 50%, traditional transaction dashboards fail to trigger an alert until the account has already lapsed into complete dormancy.
+* **The Need for Decision Intelligence**: Operational teams require deterministic, rule-based behavioral signals tied directly to testable commercial playbooks with holdout control group designs.
 
 ---
 
-## 4. Key Analytical Discoveries
+## What the Project Does
 
-All findings originate strictly from verified pipeline outputs:
+The system moves through an auditable analytical chain:
+1. **Data Ingestion & Integrity**: Ingests 1,067,371 raw records from the official UCI Online Retail II repository without modifying source bytes, applying exact composite-key deduplication (removing 34,337 duplicate lines).
+2. **Event Classification**: Enforces a 4-tier precedence rule (`CANCELLATION` > `REVERSAL_OR_RETURN` > `VALID_PURCHASE` > `INVALID_OR_UNUSABLE`), cleanly isolating 779,423 valid purchases while preserving 19,494 cancellations to compute customer return rates.
+3. **Relational Dimensional Modeling**: Implements a star-schema architecture in PostgreSQL (`staging`, `analytics`, `reporting` schemas) with surrogate keys, separating line-item transactions (779k rows) from order headers (36,969 orders) and customer entities (5,878 accounts).
+4. **Behavioral Feature Engineering**: Calculates 32 behavioral features per customer relative to a fixed reference date (`2011-12-10 00:00:00`), isolating single-order and new accounts (31.5% of population) via an explicit eligibility gate (`insufficient_history = TRUE`).
+5. **Silhouette-Optimized Clustering**: Evaluates K-Means across $K \in \{3, 4, 5, 6\}$, selecting $K=3$ deterministically based on peak silhouette score (0.2749) and minimum cluster share constraints ($\ge 5\%$).
+6. **Dynamic Lifecycle Snapshots**: Vectorizes 98,557 monthly customer snapshots across 25 calendar months, tracking month-over-month transitions across 5 lifecycle states (`REACTIVATED` > `EMERGING` > `DORMANT` > `SOFTENING` > `ENGAGED`).
+7. **Decision Signal Engine**: Evaluates 6 deterministic behavioral signals across all accounts, mapping identified cohorts to structured decision playbooks with 20% holdout control testing designs.
 
-1. **Severe Revenue Concentration (Pareto Distribution)**:
-   - The top **1%** of eligible accounts generate **26.4%** of total spend.
-   - The top **5%** generate **53.8%** of total spend.
-   - The top **20%** generate **83.1%** of total spend.
-   - The business exhibits wholesale B2B dynamics requiring dedicated key-account protections.
+---
 
-2. **High-Value Account Deceleration (`HIGH_VALUE_SOFTENING`)**:
-   - **261 accounts** in the top spend quintile (spend $\ge$ £2,910) show a $\ge 25\%$ contraction in recent 90-day spend.
-   - These accounts represent over **£1.2 million** in historical revenue exposure.
+## New Contributions and Improvements
 
-3. **Single-Order Buyer Prevalence**:
-   - **31.5%** of all identified customer accounts (1,855 customers) placed exactly one order and never returned over 24 months.
-   - Repeat customer rate is **68.5%** (4,023 multi-order accounts).
+| Analytical Dimension | Standard Baseline Approach | CBDIL Systematic Contribution |
+| :--- | :--- | :--- |
+| **Event Classification** | Cancellations deleted or mixed into sales | Enforces 4-tier precedence; captures return rates without deflating historical order frequency. |
+| **Behavioral Modeling** | Single composite RFM score | Constructs a 5-dimensional behavioral vector: Value, Activity, Breadth, Stability, Momentum. |
+| **Eligibility Governance** | Single-order accounts deleted arbitrarily | Isolates single-order accounts (31.5%) via metadata flags; retains them in reporting totals while protecting clustering models. |
+| **Model Selection** | Subjective cluster count selection | Automated rule: smallest $K$ with silhouette $\ge 90\%$ of peak and all cluster shares $\ge 5\%$. |
+| **Lifecycle Analysis** | Static lifetime snapshot | 98,557 monthly customer snapshots tracking month-over-month state transitions. |
+| **Decision Support** | Raw descriptive dashboards | Evaluates 6 rule-based decision signals linked to holdout testing playbooks with guardrail KPIs. |
+| **Quality Audit** | Ad-hoc or missing validation | Embedded audit layer evaluating 6 data-quality controls directly in the database. |
+
+---
+
+## Key Findings
+
+1. **Extreme Value Concentration (Pareto Distribution)**:
+   * The top **1%** of accounts generate **26.4%** of gross purchasing value.
+   * The top **5%** generate **53.8%** of gross purchasing value.
+   * The top **20%** drive **83.1%** of gross purchasing value (£13.75M of £16.55M eligible spend).
+   * *Business Takeaway*: Revenue stability is governed by wholesale repeat buyers, confirming the need for key-account capacity protection.
+
+2. **High-Value Deceleration Risk (`HIGH_VALUE_SOFTENING`)**:
+   * **261 accounts** in the top spend quintile (spend $\ge$ £2,910) show a $\ge 25\%$ drop in recent 90-day spend relative to baseline.
+   * These accounts represent over **£2.56 million** in historical revenue exposure, warranting proactive commercial check-ins.
+
+3. **Prevalence of One-Time Purchasers**:
+   * **31.5%** of all customer accounts (1,855 out of 5,878) place exactly one order during their entire history and never return. Repeat customer rate is **68.5%**.
 
 4. **Behavioral Segment Structure ($K=3$)**:
-   - **High-Value Stable** (28.9% of accounts, 75.0% of total spend): Median spend £4,967, median 13 orders, median recency 23 days.
-   - **Emerging Engagement** (26.9% of accounts, 12.6% of spend): Median spend £1,260, median 4 orders, median recency 29 days.
-   - **Low-Activity / Long-Recency** (44.1% of accounts, 12.4% of spend): Median spend £816, median 3 orders, median recency 266 days.
+   * **High-Value Stable** (1,164 accounts | 28.9% share | 75.0% spend): Median spend £4,967; median 13 orders; median recency 23 days; median 173 unique SKUs.
+   * **Emerging Engagement** (1,084 accounts | 27.0% share | 12.6% spend): Median spend £1,260; median 4 orders; median recency 29 days; median +100% momentum.
+   * **Low-Activity / Long-Recency** (1,775 accounts | 44.1% share | 12.4% spend): Median spend £816; median 3 orders; median recency 266 days.
 
 ---
 
-## 5. Quickstart & Reproduction Commands
+## Dashboards
+
+### 1. Streamlit Decision Intelligence Workbench (`app/app.py`)
+Provides an interactive multi-view decision interface connected directly to cached analytical exports:
+* **Page 1: Executive Overview**: Top KPIs, monthly spend/order trends, empirical Lorenz concentration curve, and verified operational findings.
+* **Page 2: Behavioral Segments**: Comparative metrics matrix, log-spend vs recency scatter plot, SKU breadth boxplots, and strategic inquiry cards.
+* **Page 3: Segment Deep Dive**: Recent vs prior 90-day spend comparison, active monthly trends, and segment-specific decision questions.
+* **Page 4: Behavior Over Time**: Monthly stacked state area charts, interactive state migration heatmap, and cohort retention grid.
+* **Page 5: Decision Signals**: Inventory of rule-based triggers by severity with complete customer-level evidence breakdowns.
+* **Page 6: Customer Explorer**: Individual account diagnostic card detailing historical spend, order cadence, spend momentum, classification rationale, and active trigger limitations.
+
+### 2. Power BI Reporting Suite (`dashboard/powerbi/`)
+* **Semantic Star Model**: Relational model connecting `dim_customer`, `dim_product`, `dim_date`, `dim_country`, and fact tables.
+* **DAX Measure Catalog**: 16 formatted measures (`dax/measures.dax`) utilizing safe division and filter context modification.
+* **Visual Blueprints**: 7 detailed page layout specifications (`page_specs/page_layout_specs.md`).
+
+---
+
+## Data Quality & Controls
+
+The data governance layer evaluates 6 continuous controls (`reporting.data_control_summary`):
+* **`CTRL-01` (Unattributed Guest Transactions)**: Flags 243,007 rows (22.77%) lacking customer IDs. Status: **WARNING**. Preserved in staging for gross accounting while isolated from account-level clustering.
+* **`CTRL-02` (Corrupted Negative Unit Prices)**: Identifies 5 bad debt adjustment lines (-£53k). Status: **PASS**. Filtered via Class 4 precedence.
+* **`CTRL-03` (Transaction Deduplication)**: Detects 34,337 duplicate lines (3.22%). Status: **PASS**. Deduplicated via composite key hash.
+* **`CTRL-04` (Longitudinal Eligibility Filter)**: Flags 1,855 accounts (31.56%) with $< 2$ orders or $< 90$d tenure. Status: **PASS**. Preserved in summary totals while excluded from K-Means.
+* **`CTRL-05` (Elevated Reversal Distortion)**: Tracks 335 accounts (5.7%) with return spend exceeding 10%. Status: **WARNING**. Attached as limitation metadata to decision signal records.
+* **`CTRL-06` (Segment Share Viability)**: Confirms no selected cluster contains $< 5\%$ of eligible accounts. Status: **PASS** (smallest cluster represents 26.95%).
+
+---
+
+## Reproducibility & Commands
 
 ### Prerequisites
-- Python 3.12+ (tested on Python 3.14.6 x64 Windows)
-- Git
+* Python 3.10+ (tested on Python 3.14.6 x64)
+* Git
 
-### 1. Clone & Set Up Environment
+### Step-by-Step Execution
 ```bash
-git clone <repo-url>
+# 1. Clone repository & create virtual environment
+git clone https://github.com/hriday-sobti/consumer-behavior-decision-intelligence-lab.git
 cd consumer_behavior_decision_intelligence_lab
-
-# Create virtual environment
 python -m venv .venv
 
-# Activate virtual environment (Windows PowerShell)
-.venv\Scripts\Activate.ps1
-# (or Windows Command Prompt)
-.venv\Scripts\activate.bat
-# (or Linux / macOS)
-source .venv/bin/activate
+# 2. Activate virtual environment (Windows)
+.venv\Scripts\activate
+# (Linux/macOS)
+# source .venv/bin/activate
 
-# Install dependencies
+# 3. Install dependencies
 pip install -r requirements.txt
 pip install -e .
-```
 
-### 2. Acquire Raw Data
-```bash
+# 4. Acquire raw dataset
 python scripts/acquire_data.py
-```
 
-### 3. Run Complete End-to-End Analytical Pipeline
-```bash
+# 5. Run end-to-end analytical pipeline
 python scripts/run_pipeline.py
-```
-*(Executes profiling, event classification, deduplication, feature engineering, clustering, monthly snapshots, state transitions, decision signals, database loads, reporting exports, and validation checks).*
 
-### 4. Run Automated Test Suite
-```bash
-pytest -v
-```
+# 6. Run automated test suite (229 tests)
+pytest -q
 
-### 5. Launch Interactive Streamlit Workbench
-```bash
+# 7. Launch Streamlit Decision Workbench
 streamlit run app/app.py
 ```
 
 ---
 
-## 6. Project Directory Layout
+## Limitations
 
-```
-consumer_behavior_decision_intelligence_lab/
-├── README.md                           # System overview, findings, reproduction instructions
-├── LICENSE                             # MIT Open Source License
-├── pyproject.toml                      # Build specifications & pytest configurations
-├── requirements.txt                    # Locked core dependencies
-├── .env.example                        # Database and environment template
-│
-├── data/
-│   ├── raw/                            # Immutable raw workbook & provenance metadata
-│   ├── interim/                        # Cleaned parquet staging caches
-│   └── processed/                      # Analytical parquet tables
-│
-├── sql/                                # Production PostgreSQL DDL and audit queries
-│   ├── 00_database_setup.sql           # Schema isolation (staging, analytics, reporting)
-│   ├── 01_staging_tables.sql           # Raw staging loads with event classes
-│   ├── 02_dimension_tables.sql         # Customer, Product, Date, Country dimensions
-│   ├── 03_fact_tables.sql              # Fact Order & Fact Transaction
-│   ├── 04_customer_features.sql        # 5-dimensional customer behavioral table
-│   ├── 05_rfm.sql                      # Supporting RFM quintile model
-│   ├── 06_behavioral_segments.sql      # Segment profiles & customer assignments
-│   ├── 07_monthly_snapshots.sql        # Longitudinal monthly customer snapshots
-│   ├── 08_state_transitions.sql        # Transition matrix & individual history
-│   ├── 09_opportunity_flags.sql        # Decision signals & strategy catalog
-│   ├── 10_reporting_views.sql          # Executive summary reporting tables
-│   └── 11_validation_queries.sql       # Automated integrity & constraint checks
-│
-├── src/                                # Reusable modular engineering core
-│   ├── config.py                       # Analytical thresholds & time windows
-│   ├── logging_config.py               # Structured logging setup
-│   ├── ingestion/                      # Data loaders and PostgreSQL engine
-│   ├── cleaning/                       # Precedence classification & deduplication
-│   ├── validation/                     # Data profiling and quality checks
-│   ├── features/                       # 5-dimensional features & RFM logic
-│   ├── segmentation/                   # K-Means clustering & silhouette selection
-│   ├── lifecycle/                      # Vectorized snapshots & lifecycle states
-│   ├── decisions/                      # Decision signals & deterministic insights
-│   └── reporting/                      # Standardized reporting exports & figures
-│
-├── scripts/                            # Pipeline execution entry points
-│   ├── acquire_data.py                 # Direct archive download
-│   ├── profile_data.py                 # Data profiling runner
-│   ├── clean_data.py                   # Event classification & cleaning
-│   ├── build_features.py               # Customer features & RFM
-│   ├── run_segmentation.py             # Behavioral clustering
-│   ├── build_snapshots.py              # Snapshots & state transitions
-│   ├── build_decision_signals.py       # Decision signals engine
-│   ├── export_reporting_data.py        # CSV exports & insights
-│   ├── load_database.py                # PostgreSQL bulk loader
-│   ├── validate_all.py                 # Full database & constraint audit
-│   └── run_pipeline.py                 # Single-command end-to-end master runner
-│
-├── app/                                # Streamlit decision intelligence app
-│   └── app.py                          # 6-view interactive decision workbench
-│
-├── notebooks/                          # Initial EDA & hypothesis verification
-│   └── 01_initial_exploration.ipynb    # Visual checks across 5 dimensions
-│
-├── dashboard/powerbi/                  # Power BI reporting layer
-│   ├── data_exports/                   # Verified CSV reporting datasets
-│   ├── dax/measures.dax                # Pre-built DAX measure definitions
-│   ├── theme/cbdil_theme.json          # Muted executive color theme
-│   ├── model/                          # Star schema relationship specs
-│   └── page_specs/                     # 7-page visual layout blueprints
-│
-├── tests/                              # Comprehensive test suite (16 tests)
-│   ├── test_ingestion.py               # Provenance & raw validation
-│   ├── test_cleaning.py                # Precedence rules & deduplication
-│   ├── test_features.py                # Reference date & eligibility
-│   ├── test_rfm.py                     # Quintile score bounds
-│   ├── test_segments.py                # Seed stability & clustering
-│   ├── test_states.py                  # Lifecycle state precedence
-│   ├── test_decisions.py               # Signal triggers & severity
-│   ├── test_database.py                # PostgreSQL integrity queries
-│   └── test_pipeline.py                # Export verification
-│
-├── docs/                               # Complete analytical documentation
-│   ├── data_source.md                  # Provenance, citations, and DOI
-│   ├── data_dictionary.md              # Table grains, definitions, and types
-│   ├── methodology.md                  # Feature formulas, windows, and rules
-│   ├── data_quality.md                 # Profiling anomalies & audit controls
-│   ├── architecture.md                 # System components & data flow
-│   ├── research_log.md                 # Technical decisions & engine constraints
-│   ├── insight_log.md                  # 6-part decision register
-│   ├── decision_framework.md           # Decision strategy testing designs
-│   ├── dashboard_guide.md              # Streamlit & Power BI guides
-│   ├── stakeholder_questions.md        # Business question mapping
-│   ├── data_lineage.md                 # Metric transformations matrix
-│   └── limitations.md                  # Domain & observational bounds
-│
-└── outputs/
-    ├── figures/                        # Interactive Plotly HTML visuals
-    ├── tables/                         # Profiles, insights, and transition matrices
-    ├── exports/                        # Standardized reporting CSVs
-    └── reports/                        # Business brief & run reports
-```
-
----
-
-## 7. Controls & Limitations
-
-- **Observational Nature**: The dataset reflects historical purchasing logs without randomized promotional campaigns. Decision signals define hypotheses for testing rather than guaranteed revenue uplifts.
-- **Wholesale Reseller Footprint**: Many high-spending accounts operate as commercial retailers with seasonal, lumpy purchasing intervals.
-- **Unattributed Records (22.77%)**: Walk-in POS and guest transactions lacking customer identifiers are isolated in staging to prevent distorting account-level longitudinal histories.
+1. **Merchant Domain Scope**: The dataset represents a commercial UK-based giftware distributor; reorder intervals and basket sizes cannot be generalized to consumer banking, FMCG, or SaaS subscriptions.
+2. **Wholesale Purchase Lumpiness**: Inactivity intervals of 60–90 days frequently reflect standard distributor restocking cycles rather than account cancellation.
+3. **Observational Bounds**: Marketing interventions are unobserved in the source data; decision signals define hypotheses for testing rather than guaranteed causal uplifts.
+4. **Guest Checkout Dilution**: 22.8% of raw transaction records lack customer identifiers, meaning walk-in revenue cannot be tracked longitudinally at the account grain.
